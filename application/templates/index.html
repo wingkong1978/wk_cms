@@ -1,35 +1,20 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <header>
-        <div class="container">
-            <h1>Flask-CMS</h1>
-            <nav>
-                <ul>
-                    <li><a href="{{ url_for('main.index') }}">首页</a></li>
-                    <li><a href="/admin/">管理后台</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+{% extends 'base.html' %}
 
-    <main class="container">
-        <section class="welcome">
-            <h2>欢迎使用 Flask-CMS 内容管理系统</h2>
-            <p>这是一个基于Flask构建的轻量级内容管理系统。</p>
-        </section>
-    </main>
+{% block title %}{{ title }} - Flask-CMS{% endblock %}
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 Flask-CMS. All rights reserved.</p>
+{% block content %}
+<section class="welcome">
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">欢迎使用 Flask-CMS 内容管理系统</h1>
+            <p class="col-md-8 fs-4">这是一个基于Flask构建的轻量级内容管理系统。</p>
+            {% if not current_user.is_authenticated %}
+            <div class="mt-4">
+                <a href="{{ url_for('security.login') }}" class="btn btn-primary btn-lg me-2">登录</a>
+                <a href="{{ url_for('security.register') }}" class="btn btn-outline-secondary btn-lg">注册</a>
+            </div>
+            {% endif %}
         </div>
-    </footer>
-</body>
-</html> 
+    </div>
+</section>
+{% endblock %} 
