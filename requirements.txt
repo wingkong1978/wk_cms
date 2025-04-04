@@ -1,0 +1,70 @@
+# Flask-CMS 项目依赖
+# 核心框架
+Flask==2.3.3
+Werkzeug==2.3.7
+Jinja2==3.1.2
+itsdangerous==2.1.2
+click==8.1.7
+
+# CMS核心扩展
+Flask-Admin==1.6.1
+Flask-Security-Too==5.3.0
+Flask-WTF==1.1.1
+email-validator==2.0.0
+WTForms==3.0.1
+Flask-BabelEx==0.9.4  # Flask-Admin国际化支持
+tablib==3.5.0  # 数据导出支持
+wtforms-sqlalchemy==0.3.0  # SQLAlchemy表单支持
+
+# 数据库相关
+Flask-SQLAlchemy==3.0.5
+SQLAlchemy==2.0.20
+alembic==1.12.0
+Flask-Migrate==4.0.4
+psycopg2-binary==2.9.7  # PostgreSQL驱动
+PyMySQL==1.1.0  # MySQL驱动
+# mysqlclient==2.2.0  # MySQL驱动(C扩展版) - 需要系统依赖libmysqlclient-dev
+
+# 缓存
+Flask-Caching==2.0.2
+redis==4.6.0
+Flask-Session==0.5.0
+
+# 环境变量管理
+python-dotenv==1.0.0
+
+# API相关
+Flask-RESTful==0.3.10
+marshmallow==3.20.1
+Flask-Marshmallow==0.15.0
+marshmallow-sqlalchemy==0.29.0
+
+# 认证与安全
+Flask-Login==0.6.2
+Flask-Bcrypt==1.0.1
+PyJWT==2.8.0
+
+# 文件上传
+Flask-Uploads==0.2.1
+Pillow==10.0.0
+
+# 任务队列
+celery==5.3.4
+
+# WSGI服务器
+gunicorn==21.2.0
+gevent==23.9.1
+
+# 开发工具
+pytest==7.4.0
+pytest-flask==1.2.0
+flake8==6.1.0
+black==23.7.0
+isort==5.12.0
+
+# 其他实用工具
+Flask-DebugToolbar==0.13.1
+Flask-Mail==0.9.1
+Flask-Babel==3.1.0
+bleach==6.0.0  # 内容净化
+markdown==3.4.4  # Markdown支持 
