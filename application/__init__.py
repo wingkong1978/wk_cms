@@ -32,19 +32,17 @@ def init_db():
         from sqlalchemy import inspect
         inspector = inspect(db.engine)
         
-        # 如果users表不存在，则创建所有表
-        if 'users' not in inspector.get_table_names():
+        # 如果users表不存在，且不存在alembic_version表（表示未使用迁移）则创建所有表
+        tables = inspector.get_table_names()
+        if 'users' not in tables and 'alembic_version' not in tables:
             db.create_all()
             print("数据库表已成功创建!")
+        elif 'alembic_version' in tables:
+            print("数据库使用迁移管理，跳过直接创建表")
         
     except Exception as e:
         print(f"数据库初始化错误: {str(e)}")
-        # 如果出错，尝试创建所有表
-        try:
-            db.create_all()
-            print("数据库表已成功创建!")
-        except Exception as e:
-            print(f"无法创建数据库表: {str(e)}")
+        # 不自动尝试创建表，避免与迁移冲突
 
 def create_app(config=None, register_admin=True):
     """应用工厂函数"""
@@ -76,7 +74,11 @@ def create_app(config=None, register_admin=True):
         MAIL_USE_SSL=os.environ.get('MAIL_USE_SSL', 'false').lower() == 'true',
         MAIL_USERNAME=os.environ.get('MAIL_USERNAME'),
         MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD'),
-        MAIL_DEFAULT_SENDER=os.environ.get('MAIL_DEFAULT_SENDER', 'noreply@flask-cms.com')
+        MAIL_DEFAULT_SENDER=os.environ.get('MAIL_DEFAULT_SENDER', 'noreply@flask-cms.com'),
+        
+        # 配置Flask-Migrate
+        SQLALCHEMY_MIGRATE_REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'migrations'),
+        SQLALCHEMY_MIGRATE_COMPARE_TYPE = True
     )
     
     # 如果提供了配置对象，则应用它
@@ -85,7 +87,7 @@ def create_app(config=None, register_admin=True):
     
     # 初始化扩展
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, directory=app.config.get('SQLALCHEMY_MIGRATE_REPO'), compare_type=True)
     mail.init_app(app)
     csrf.init_app(app)
     admin.init_app(app)
